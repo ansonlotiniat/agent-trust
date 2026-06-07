@@ -65,6 +65,47 @@ agent-trust decide -- sudo rm -rf /etc
 # ask: privilege-escalation, destructive, recursive, forceful, system, system-mutation
 ```
 
+### JSON examples for `decide`
+
+`agent-trust decide` supports `--json` output for command, path, host, tool, and content inputs.
+
+```bash
+agent-trust decide --json -- rm -rf dist
+{
+  "decision": "allow",
+  "reason": "no rule matched; defaultAction=allow",
+  "checks": [...]
+}
+
+agent-trust decide --json --path ~/.ssh/id_rsa
+{
+  "decision": "ask",
+  "reason": "Brake before touching local credential paths.",
+  "checks": [...]
+}
+
+agent-trust decide --json --host api.example.com
+{
+  "decision": "allow",
+  "reason": "network host api.example.com observed",
+  "checks": [...]
+}
+
+agent-trust decide --json --tool read_file
+{
+  "decision": "allow",
+  "reason": "no rule matched; defaultAction=allow",
+  "checks": [...]
+}
+
+agent-trust decide --json --content 'OPENAI_API_KEY=sk-proj-xxxxxxxx'
+{
+  "decision": "ask",
+  "reason": "Potential secret pattern detected in provided content.",
+  "checks": [...]
+}
+```
+
 ## Known Limitations
 
 The current analyzer is heuristic. It handles common dangerous-mode agent behavior, but it is not yet a complete shell AST, filesystem, or language runtime model.
