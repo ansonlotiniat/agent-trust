@@ -65,6 +65,9 @@ agent-trust wrap claude --dangerous
 # alias claude_safe="agent-trust run -- claude --dangerously-skip-permissions"
 ```
 
+For ready-to-copy examples for Claude Code, Codex, and Cursor-style
+`--force` workflows, see [docs/integrations.md](docs/integrations.md).
+
 What happens by default:
 
 - the wrapped agent keeps dangerous-mode speed and normal environment access;
