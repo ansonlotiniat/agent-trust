@@ -4,6 +4,9 @@
   "description": "A terminal circuit breaker for AI coding agents running in dangerous mode.",
   "type": "module",
   "homepage": "https://github.com/ansonlotiniat/agent-trust#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ansonlotiniat/agent-trust.git"
@@ -38,6 +41,7 @@
     "sandbox",
     "terminal"
   ],
+  "author": "Agent Trust contributors",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=20"

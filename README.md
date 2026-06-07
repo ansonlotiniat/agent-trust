@@ -1,5 +1,9 @@
 # Agent Trust
 
+[![CI](https://github.com/ansonlotiniat/agent-trust/actions/workflows/ci.yml/badge.svg)](https://github.com/ansonlotiniat/agent-trust/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![Node.js >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
+
 Agent Trust is a circuit breaker for AI coding agents: keep dangerous mode on, but stop catastrophic deletes, credential access, system mutation, and secret exfiltration.
 
 Agent Trust lets you keep the productivity of commands such as:
@@ -19,9 +23,21 @@ Agent Trust is designed as a local circuit breaker for that boundary.
 
 ## Install
 
+Install from GitHub until the npm package is published:
+
 ```bash
-npm install
+npm install -g github:ansonlotiniat/agent-trust
+agent-trust --help
+```
+
+For local development:
+
+```bash
+git clone https://github.com/ansonlotiniat/agent-trust.git
+cd agent-trust
+npm ci
 npm link
+npm run check
 ```
 
 The runtime CLI is plain ESM JavaScript with no production dependencies. `npm run check` verifies the runtime files and runs the test suite.
@@ -59,6 +75,23 @@ What happens by default:
 - audit logs are hash-chained so tampering is detectable.
 
 Optional strict controls can enable environment scrubbing and OS sandboxing through policy.
+
+## Semantic, not keyword-only
+
+Agent Trust does not treat every `rm` as suspicious. It classifies command intent and target scope:
+
+```bash
+agent-trust decide -- rm -rf dist
+# allow
+
+agent-trust decide -- rm -rf /
+# deny
+
+agent-trust decide -- cat ~/.ssh/id_rsa
+# ask
+```
+
+The current model and known limitations are documented in [docs/semantic-analysis.md](docs/semantic-analysis.md).
 
 ## MCP tool-call proxy
 
@@ -186,3 +219,5 @@ This repository is intended to become a production-grade terminal tool for AI ag
 - evidence bundle export;
 - doctor checks;
 - tests for semantic fuse decisions, scanning, audit integrity, optional network proxy startup and CLI smoke behavior.
+
+See [ROADMAP.md](ROADMAP.md), [SECURITY.md](SECURITY.md), [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/launch-kit.md](docs/launch-kit.md).

@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest a capability, integration, or policy behavior.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow or risk should Agent Trust handle better?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the behavior you want.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: What did you try instead?
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This affects command analysis.
+        - label: This affects policy decisions.
+        - label: This affects MCP behavior.
+        - label: This affects installation or packaging.

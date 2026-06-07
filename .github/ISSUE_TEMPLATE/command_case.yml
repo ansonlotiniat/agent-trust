@@ -1,0 +1,35 @@
+name: Command analysis case
+description: Propose a shell command case that Agent Trust should classify better.
+title: "[Analyzer]: "
+labels: ["analyzer", "help wanted"]
+body:
+  - type: textarea
+    id: command
+    attributes:
+      label: Command
+      description: Provide the exact command or shell script.
+      render: shell
+    validations:
+      required: true
+  - type: dropdown
+    id: expected
+    attributes:
+      label: Expected decision
+      options:
+        - allow
+        - ask
+        - deny
+    validations:
+      required: true
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning
+      description: Why should this be allowed, paused, or denied?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Mention OS, shell, cwd, relevant symlinks, and policy settings if they matter.
