@@ -1,0 +1,9 @@
+node_modules
+dist
+.agent-trust/audit/*.jsonl
+.agent-trust/policy.yaml
+.agent-trust/policy.json
+.agent-trust/evidence.json
+.agent-trust/tmp
+.DS_Store
+npm-debug.log*

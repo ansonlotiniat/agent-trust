@@ -1,0 +1,47 @@
+{
+  "name": "agent-trust",
+  "version": "0.1.0",
+  "description": "A terminal circuit breaker for AI coding agents running in dangerous mode.",
+  "type": "module",
+  "homepage": "https://github.com/ansonlotiniat/agent-trust#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ansonlotiniat/agent-trust.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ansonlotiniat/agent-trust/issues"
+  },
+  "bin": {
+    "agent-trust": "./lib/cli.js",
+    "at": "./lib/cli.js"
+  },
+  "files": [
+    "lib",
+    "examples",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/verify-lib.mjs",
+    "test": "node scripts/test.mjs",
+    "check": "npm run build && npm test",
+    "dev": "node lib/cli.js"
+  },
+  "keywords": [
+    "ai-agent",
+    "claude-code",
+    "codex",
+    "mcp",
+    "security",
+    "circuit-breaker",
+    "sandbox",
+    "terminal"
+  ],
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

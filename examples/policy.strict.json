@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "defaultAction": "deny",
+  "interactive": true,
+  "projectRoot": ".",
+  "auditDir": ".agent-trust/audit",
+  "sandbox": {
+    "enabled": true,
+    "mode": "auto",
+    "macosProfile": "strict",
+    "writablePaths": [".", ".agent-trust/tmp"],
+    "readablePaths": ["."],
+    "deniedPaths": [
+      "~/.ssh",
+      "~/.aws",
+      "~/.config/gcloud",
+      "~/.kube",
+      "~/.docker",
+      "~/.netrc",
+      "~/.npmrc",
+      "~/.pypirc",
+      "~/.git-credentials"
+    ],
+    "allowNetwork": false,
+    "allowedHosts": []
+  },
+  "secrets": {
+    "enabled": true,
+    "failOn": "medium",
+    "redactAudit": true,
+    "scrubEnv": true,
+    "additionalPatterns": []
+  },
+  "network": {
+    "proxyEnv": true,
+    "blockByDefault": true,
+    "allowedHosts": ["api.openai.com", "api.anthropic.com"]
+  },
+  "rules": [
+    {
+      "id": "deny-catastrophic-actions",
+      "action": "deny",
+      "when": {
+        "analysisTag": ["catastrophic"]
+      }
+    },
+    {
+      "id": "deny-credential-mutation",
+      "action": "deny",
+      "when": {
+        "analysisTag": ["credential-mutation"]
+      }
+    },
+    {
+      "id": "deny-critical-secrets",
+      "action": "deny",
+      "when": {
+        "riskAtLeast": "critical"
+      }
+    },
+    {
+      "id": "ask-system-mutation",
+      "action": "ask",
+      "when": {
+        "analysisTag": ["system-mutation", "shell-config-mutation", "credential-access", "disk-operation", "privilege-escalation"]
+      }
+    }
+  ]
+}
