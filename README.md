@@ -127,6 +127,176 @@ agent-trust decide --json --host api.openai.com
 
 The command evaluates the same policy engine used by guarded process runs and MCP tool-call filtering, then prints the winning `allow`, `ask` or `deny` decision.
 
+### JSON output examples
+
+These examples were generated from the current CLI with the default policy so the fields match what `agent-trust decide --json` prints today.
+
+Command decision with a deny:
+
+```bash
+agent-trust decide --json -- rm -rf /
+```
+
+```json
+{
+  "decision": "deny",
+  "ruleId": "deny-catastrophic-actions",
+  "reason": "Stop filesystem-wide destructive operations such as rm -rf / or rm -rf ~.",
+  "checks": [
+    {
+      "decision": "allow",
+      "reason": "no rule matched; defaultAction=allow",
+      "subject": "command rm -rf /"
+    },
+    {
+      "decision": "deny",
+      "ruleId": "deny-catastrophic-actions",
+      "reason": "Stop filesystem-wide destructive operations such as rm -rf / or rm -rf ~.",
+      "subject": "analysis catastrophic,destructive,forceful,outside-project,outside-project-mutation,recursive,root,write"
+    }
+  ],
+  "analyses": [
+    {
+      "kind": "command-analysis",
+      "command": "rm",
+      "args": [
+        "-rf",
+        "/"
+      ],
+      "tags": [
+        "catastrophic",
+        "destructive",
+        "forceful",
+        "outside-project",
+        "outside-project-mutation",
+        "recursive",
+        "root",
+        "write"
+      ],
+      "targets": [
+        {
+          "input": "/",
+          "path": "/",
+          "tags": [
+            "catastrophic",
+            "outside-project",
+            "root"
+          ],
+          "reasons": [
+            "targets filesystem root"
+          ]
+        }
+      ],
+      "reason": "targets filesystem root; recursive forced delete targets filesystem root; write operation targets paths outside the project"
+    }
+  ],
+  "findings": []
+}
+```
+
+Path decision with an ask:
+
+```bash
+agent-trust decide --json --path /etc/hosts
+```
+
+```json
+{
+  "decision": "ask",
+  "ruleId": "ask-system-path",
+  "reason": "Brake before touching system paths.",
+  "checks": [
+    {
+      "decision": "ask",
+      "ruleId": "ask-system-path",
+      "reason": "Brake before touching system paths.",
+      "subject": "path /etc/hosts"
+    }
+  ],
+  "analyses": [
+    {
+      "kind": "path-analysis",
+      "input": "/etc/hosts",
+      "path": "/etc/hosts",
+      "tags": [
+        "outside-project",
+        "system"
+      ],
+      "reason": "targets a system path"
+    }
+  ],
+  "findings": []
+}
+```
+
+Host decision with an allow:
+
+```bash
+agent-trust decide --json --host api.openai.com
+```
+
+```json
+{
+  "decision": "allow",
+  "ruleId": "network-allowed-host",
+  "reason": "network host api.openai.com is in allowedHosts",
+  "checks": [
+    {
+      "decision": "allow",
+      "ruleId": "network-allowed-host",
+      "reason": "network host api.openai.com is in allowedHosts",
+      "subject": "network api.openai.com"
+    }
+  ],
+  "analyses": [],
+  "findings": []
+}
+```
+
+Tool decision with an allow:
+
+```bash
+agent-trust decide --json --tool read_file
+```
+
+```json
+{
+  "decision": "allow",
+  "reason": "no rule matched; defaultAction=allow",
+  "checks": [
+    {
+      "decision": "allow",
+      "reason": "no rule matched; defaultAction=allow",
+      "subject": "mcp tool read_file"
+    }
+  ],
+  "analyses": [],
+  "findings": []
+}
+```
+
+Content decision with an allow:
+
+```bash
+agent-trust decide --json --content 'release notes only; no credentials here'
+```
+
+```json
+{
+  "decision": "allow",
+  "reason": "no rule matched; defaultAction=allow",
+  "checks": [
+    {
+      "decision": "allow",
+      "reason": "no rule matched; defaultAction=allow",
+      "subject": "content risk=none"
+    }
+  ],
+  "analyses": [],
+  "findings": []
+}
+```
+
 ## Audit verification and evidence export
 
 ```bash
